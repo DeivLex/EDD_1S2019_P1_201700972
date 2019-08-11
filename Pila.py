@@ -23,12 +23,3 @@ class Pila:
         return self.items == []
     def imprimir(self):
         print(self.items)
-
-if __name__ == "__main__":
-    p = Pila()
-    p.apilar(1)
-    p.apilar(2)
-    p.apilar("hola")
-    print(p.es_vacia())
-    p.desapilar()
-    p.imprimir()

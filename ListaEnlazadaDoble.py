@@ -98,12 +98,3 @@ class ListaDoble(object):
                     Validar = False
                 else:
                     node = node.pAnt
-
-
-s = ListaDoble() # Instancia de la clase
-s.AddInicio(4)
-s.AddInicio(3) # Agregamos un elemento al frente del nodo
-s.AddInicio(2) # Agregamos un elemento al final del nodo
-s.AddInicio(1) # Agregamos otro elemento al frente del nodo
-s.EliminarPrimero()
-s.Imprimir() # Imprimimos la lista de nodos

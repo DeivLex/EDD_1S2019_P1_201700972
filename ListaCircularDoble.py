@@ -34,6 +34,24 @@ class ListaCircularDoble:
             self.ultimo = aux.siguiente = Nodo(dato)
             self.ultimo.anterior = aux
         self.unir_nodos()
+
+    def EliminarPrimero(self):
+        if self.vacia():
+            print("Tu estructura esta vacia")
+        elif self.primero == self.ultimo:
+            self.primero = self.ultimo = None
+        else:
+            self.primero = self.primero.siguiente
+        self.unir_nodos()
+
+    def EliminarUltimo(self):
+        if self.vacia():
+            print("Tu estructura esta vacia")
+        elif self.primero == self.ultimo:
+            self.primero = self.ultimo = None
+        else:
+            self.ultimo = self.ultimo.anterior
+        self.unir_nodos()
     
     def unir_nodos(self):
         self.primero.anterior = self.ultimo
@@ -54,19 +72,3 @@ class ListaCircularDoble:
             aux = aux.anterior
             if aux == self.ultimo:
                 break
-
-from os import system
-system("cls")
-
-s = ListaCircularDoble()
-
-s.agregar_final(12)
-s.agregar_final(45)
-s.agregar_final(18)
-s.agregar_final(36)
-s.agregar_final(10)
-
-s.RecorrerInicioFin()
-print("*"*25)
-s.RecorrerFinInicio()
-    

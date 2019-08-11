@@ -22,12 +22,3 @@ class Cola:
 
     def imprimir(self):
         print(self.items)
-
-if __name__ == "__main__":
-    c = Cola()
-    c.encolar(1)
-    c.encolar(2)
-    c.encolar("hola")
-    print(c.es_vacia())
-    c.desencolar()
-    c.imprimir()
