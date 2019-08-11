@@ -1,12 +1,11 @@
 # Creamos la clase nodo
 class Nodo(object):
-    def __init__(self,elemento):
-        self.__elemento=elemento
+    def __init__(self,posx=None, posy = None):
+        self.posx=posx
+        self.posy=posy
         self.pSig = None
         self.pAnt = None
     
-    def getElemento(self):
-        return self.__elemento
 # Creamos la clase linked_list
 class ListaDoble(object): 
     def __init__(self):
@@ -19,8 +18,8 @@ class ListaDoble(object):
             return True
 
         # Método para agregar elementos en el frente de la linked list
-    def AddInicio(self, elemento):
-        nuevo = Nodo(elemento)
+    def AddInicio(self, posx,posy):
+        nuevo = Nodo(posx,posy)
         if self.EstaVacia()==True:
             self.__primero = self.__ultimo = nuevo
         else:
@@ -29,8 +28,8 @@ class ListaDoble(object):
             self.__primero = nuevo
 
     # Método para agregar elementos al final de la linked list
-    def AddFinal(self, elemento):
-        nuevo = Nodo(elemento)
+    def AddFinal(self, posx, posy):
+        nuevo = Nodo(posx,posy)
         if self.EstaVacia()==True:
             self.__primero = self.__ultimo = nuevo
         else:
@@ -81,7 +80,7 @@ class ListaDoble(object):
             Validar = True
             node = self.__primero
             while (Validar):
-                print(node.getElemento(),end =" => ")
+                print(node.posx,node.posy,end =" => ")
                 if node == self.__ultimo:
                     Validar = False
                 else:
@@ -93,8 +92,11 @@ class ListaDoble(object):
             Validar = True
             node = self.__ultimo
             while (Validar):
-                print(node.getElemento(),end =" => ")
+                print(node.posx,node.posy,end =" => ")
                 if node == self.__primero:
                     Validar = False
                 else:
                     node = node.pAnt
+    
+    def head(self):
+        return self.__primero 
