@@ -1,20 +1,6 @@
-'''
-----------------------------------
-#Developed by                     |
-@user: Dennis Masaya              |
-#id: 201503413                    |
-#e-mail: dennismasaya@gmail.com   |
-#blog: dennismasaya.com           |
-----------------------------------
-This example demonstrates how to build a simple curses
-application that displays a Menu, every option can be
-selected and will take you to and empty screen that you
-will be able to get out and return to the Main Menu by
-pressing the [ESC] key.
-'''
-
 import curses #import the curses library
 import time
+from Cola import Cola
 from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN #import special KEYS from the curses library
 
 def paint_menu(win):
@@ -38,6 +24,7 @@ def wait_esc(win):
     while key!=27:
         key = window.getch()
 
+Puntos = Cola()
 
 stdscr = curses.initscr() #initialize console
 window = curses.newwin(20,60,0,0) #create a new curses window
@@ -56,6 +43,20 @@ while(keystroke==-1):
         keystroke=-1
     elif(keystroke==50):
         paint_title(window, ' SCOREBOARD ')
+
+        window.addstr(2,18, 'NAME')             
+        window.addstr(2,31, 'SCORE')
+
+        k=len(Puntos.items)-1
+        h=k-20
+        hori=3
+        while k > h :
+            window.addstr(hori,18, Puntos.items[k] )
+            window.addstr(hori,31, Puntos.items[k-1] )
+            k-=2
+            hori+=1
+        window.timeout(-1)
+
         wait_esc(window)
         paint_menu(window)
         keystroke=-1
