@@ -24,3 +24,6 @@ class Pila:
         return self.items == []
     def imprimir(self):
         print(self.items)
+
+    def vaciar(self):
+        self.items = []

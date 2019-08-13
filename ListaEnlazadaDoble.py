@@ -114,6 +114,10 @@ class ListaDoble(object):
             posx= tempx
             posy=tempy
             nodo=nodo.pSig
+
+    def vaciar(self):
+        self.__primero=None
+        self.__ultimo=None
         
 
 

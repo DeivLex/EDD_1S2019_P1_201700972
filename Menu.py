@@ -1,5 +1,7 @@
 import curses #import the curses library
 import time
+import pydot
+import os
 from Cola import Cola
 from ListaCircularDoble import ListaCircularDoble
 from Random import Food
@@ -9,12 +11,101 @@ from curses import KEY_RIGHT, KEY_LEFT, KEY_UP, KEY_DOWN #import special KEYS fr
 
 NombreUser='default'
 
+def reportes():
+    def ReporteUsuarios():
+        node = menu.getPrimero()
+        graph = pydot.Dot(graph_type='digraph',rankdir="LR",)
+
+        while node != menu.getUltimo():
+            node_temp = pydot.Node(node.dato, style="filled", fillcolor="white",shape="box")
+            graph.add_node(node_temp)
+            node_temp2 = pydot.Node(node.siguiente.dato, style="filled", fillcolor="white",shape="box")
+            graph.add_node(node_temp2)
+            graph.add_edge(pydot.Edge(node_temp, node_temp2,dir="both"))
+            node = node.siguiente
+            if node == menu.getUltimo():
+                node_temp3 = pydot.Node(node.siguiente.dato, style="filled", fillcolor="white",shape="box")
+                graph.add_node(node_temp3)
+                graph.add_edge(pydot.Edge(node_temp2, node_temp3,dir="both"))
+
+
+        graph.write_jpg('ReporteUsuarios.jpg')
+        os.system('ReporteUsuarios.jpg')
+
+    def ReporteScoreBoard():
+        graph = pydot.Dot(graph_type='digraph',rankdir="LR",)
+        k=len(Puntos.items)-1
+        while k > 20 :
+            node_temp = pydot.Node("("+Puntos.items[k]+" - "+Puntos.items[k-1]+")", style="filled", fillcolor="white",shape="box")
+            node_temp2 = pydot.Node("("+Puntos.items[k-2]+" - "+Puntos.items[k-3]+")", style="filled", fillcolor="white",shape="box")
+
+            if Puntos.items[k-2] == '':
+                node_temp2 = pydot.Node("null", style="filled", fillcolor="white",shape="box")
+            graph.add_node(node_temp)
+            graph.add_node(node_temp2)
+
+            graph.add_edge(pydot.Edge(node_temp, node_temp2))
+            k-=2
+
+        graph.write_jpg('ReporteScore.jpg')
+        os.system('ReporteScore.jpg')
+
+    def ReporteScore():
+        nodo = GuardarScore.items
+        grafo="digraph G {\n"
+        grafo+=str("node [shape = record];\n 2[label = \"{    ")
+        k=len(GuardarScore.items)-1
+        h=0
+        while h < k :
+            temp = "("+str(nodo[h])+","+str(nodo[h+1])+")"
+            grafo+= str( "|" + temp)		
+            h+=2		
+            
+        grafo+=str("}\"]}")
+        f= open("punteo.dot","w+")
+        f.write(grafo)
+        f.close()   
+        os.system("dot -Tjpg punteo.dot -o punteo.jpg")
+        os.system('punteo.jpg')
+
+    def ReporteSnake():
+        node = serpiente.head()
+        graph = pydot.Dot(graph_type='digraph',rankdir="LR",)
+
+        while node != serpiente.final():
+            node_temp = pydot.Node("("+str(node.posx)+" - "+str(node.posy)+")", style="filled", fillcolor="white",shape="box")
+            graph.add_node(node_temp)
+            if node == serpiente.head():
+                node_temp3 = pydot.Node("Null", style="filled", fillcolor="white",shape="box")
+                graph.add_node(node_temp3)
+                graph.add_edge(pydot.Edge(node_temp, node_temp3))
+
+            node = node.pSig
+            node_temp2 = pydot.Node("("+str(node.posx)+" - "+str(node.posy)+")", style="filled", fillcolor="white",shape="box")
+            graph.add_node(node_temp2)
+            graph.add_edge(pydot.Edge(node_temp2, node_temp,dir="both"))
+            if node == serpiente.final():
+                node_temp3 = pydot.Node("null", style="filled", fillcolor="white",shape="box")
+                graph.add_node(node_temp3)
+                graph.add_edge(pydot.Edge(node_temp2, node_temp3))
+
+        graph.write_jpg('ReporteSnake.jpg')
+        os.system('ReporteSnake.jpg')
+
+
+    ReporteUsuarios()
+    ReporteScoreBoard()
+    ReporteScore()
+    GuardarScore.vaciar()
+    ReporteSnake()
+    serpiente.vaciar()
+    
+
 def inicio(NombreUser):
     comida = Food()
     Score ='0'
     velocidad = 100
     
-    serpiente = ListaDoble()
     stdscr = curses.initscr() #initialize console
     height = 25
     width = 80
@@ -95,18 +186,11 @@ def inicio(NombreUser):
     curses.endwin() #return terminal to previous state
 
 def OpcionUser():
-    menu = ListaCircularDoble()
-    menu.agregar_final('Davis')
-    menu.agregar_final('Marcos')
-    menu.agregar_final('Pedro')
-    menu.agregar_final('Mario')
-    menu.agregar_final('Antonio')
-
     node = menu.getPrimero()
 
     def paint_menu(win,dato):
         paint_title(win,' USER SELECTION ')          #paint title
-        win.addstr(23,20,'Elegir usuario con barra espaciadora')
+        win.addstr(23,20,'Elegir usuario con doble barra espaciadora')
         win.addstr(11,30,dato)             #paint option 1
         win.timeout(-1)                         #wait for an input thru the getch() function
 
@@ -167,6 +251,14 @@ def wait_esc(win):
 
 Puntos = Cola()
 GuardarScore = Pila()
+serpiente = ListaDoble()
+
+menu = ListaCircularDoble()
+menu.agregar_inicio('Davis')
+menu.agregar_inicio('Marcos')
+menu.agregar_inicio('Pedro')
+menu.agregar_inicio('Mario')
+menu.agregar_inicio('Antonio')
 
 stdscr = curses.initscr() #initialize console
 window = curses.newwin(25,80,0,0) #create a new curses window
@@ -213,6 +305,7 @@ while(keystroke==-1):
         keystroke=-1
     elif(keystroke==52):
         paint_title(window, ' REPORTS ')
+        reportes()
         wait_esc(window)
         paint_menu(window)
         keystroke=-1

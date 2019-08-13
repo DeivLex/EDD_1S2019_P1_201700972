@@ -83,3 +83,6 @@ class ListaCircularDoble:
 
     def getPrimero(self):
         return self.primero
+
+    def getUltimo(self):
+        return self.ultimo
