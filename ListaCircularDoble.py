@@ -1,5 +1,5 @@
 class Nodo:
-    def __init__(self,dato):
+    def __init__(self,dato=None):
         self.dato = dato
         self.siguiente = None
         self.anterior = None
@@ -72,3 +72,14 @@ class ListaCircularDoble:
             aux = aux.anterior
             if aux == self.ultimo:
                 break
+
+    def longitud(self):
+        nodo = self.primero
+        numero = 1
+        while nodo != self.ultimo:
+            nodo=nodo.siguiente
+            numero+=1
+        return numero
+
+    def getPrimero(self):
+        return self.primero

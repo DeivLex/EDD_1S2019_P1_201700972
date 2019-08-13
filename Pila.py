@@ -6,10 +6,11 @@ class Pila:
         # La pila vacía se representa con una lista vacía
         self.items=[]
     
-    def apilar(self, x):
+    def apilar(self, x, y):
     
     # Apilar es agregar al final de la lista.
         self.items.append(x)
+        self.items.append(y)
 
     def desapilar(self):
         
