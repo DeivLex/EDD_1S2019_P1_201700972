@@ -2,6 +2,7 @@ import curses #import the curses library
 import time
 import pydot
 import os
+import csv
 from Cola import Cola
 from ListaCircularDoble import ListaCircularDoble
 from Random import Food
@@ -249,16 +250,18 @@ def wait_esc(win):
     while key!=27 and key!=32 :
         key = window.getch()
 
+def CargaMasiva():
+    with open('E:\\Back Up Charles\\Davis\\Usac\\Semestre 6\\Estructuras\\Practica1\\Usuario.csv') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            menu.agregar_inicio(str(row[0]))
+
 Puntos = Cola()
 GuardarScore = Pila()
 serpiente = ListaDoble()
 
 menu = ListaCircularDoble()
 menu.agregar_inicio('Davis')
-menu.agregar_inicio('Marcos')
-menu.agregar_inicio('Pedro')
-menu.agregar_inicio('Mario')
-menu.agregar_inicio('Antonio')
 
 stdscr = curses.initscr() #initialize console
 window = curses.newwin(25,80,0,0) #create a new curses window
@@ -310,6 +313,7 @@ while(keystroke==-1):
         paint_menu(window)
         keystroke=-1
     elif(keystroke==53):
+        CargaMasiva()
         paint_title(window,' BULK LOADING ')
         wait_esc(window)
         paint_menu(window)
