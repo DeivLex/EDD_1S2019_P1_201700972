@@ -315,6 +315,7 @@ while(keystroke==-1):
     elif(keystroke==53):
         CargaMasiva()
         paint_title(window,' BULK LOADING ')
+        window.addstr(8,22,'Carga con exito')
         wait_esc(window)
         paint_menu(window)
         keystroke=-1
