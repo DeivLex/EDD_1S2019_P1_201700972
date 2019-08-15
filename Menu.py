@@ -3,6 +3,7 @@ import time
 import pydot
 import os
 import csv
+import curses.textpad
 from Cola import Cola
 from ListaCircularDoble import ListaCircularDoble
 from Random import Food
@@ -250,11 +251,32 @@ def wait_esc(win):
     while key!=27 and key!=32 :
         key = window.getch()
 
-def CargaMasiva():
-    with open('E:\\Back Up Charles\\Davis\\Usac\\Semestre 6\\Estructuras\\Practica1\\Usuario.csv') as f:
+def CargaMasiva(direccion):
+    with open('E:\\Back Up Charles\\Davis\\Usac\\Semestre 6\\Estructuras\\Practica1\\'+direccion) as f:
         reader = csv.reader(f)
         for row in reader:
             menu.agregar_inicio(str(row[0]))
+
+def test_textpad():
+    inp = curses.newwin(8,55, 0,0)
+    inp.addstr(1,1, "Ingrese nombre del jugador: ")
+    sub = inp.subwin(3, 41, 2, 1)
+    sub.border()
+    sub2 = sub.subwin(1, 20, 3, 2)
+    tb = curses.textpad.Textbox(sub2)
+    inp.refresh()
+    tb.edit()
+    return tb.gather()
+def textpadCarga():
+    inp = curses.newwin(8,55, 0,0)
+    inp.addstr(1,1, "Ingrese direccion archivo csv: ")
+    sub = inp.subwin(3, 41, 2, 1)
+    sub.border()
+    sub2 = sub.subwin(1, 20, 3, 2)
+    tb = curses.textpad.Textbox(sub2)
+    inp.refresh()
+    tb.edit()
+    return tb.gather()
 
 Puntos = Cola()
 GuardarScore = Pila()
@@ -274,8 +296,18 @@ keystroke = -1
 while(keystroke==-1):
     keystroke = window.getch()  #get current key being pressed
     if(keystroke==49): #1
-        
-        inicio(NombreUser)
+        if NombreUser=='default':
+            hola = test_textpad()
+            holas = str(hola.split())
+            k=2
+            hoho=''
+            while k < len(holas)-2:
+                hoho+=str(holas[k])
+                k+=1
+            menu.agregar_inicio(hoho)
+            inicio(hoho)
+        else:
+            inicio(NombreUser)
 
         wait_esc(window)
         paint_menu(window)
@@ -313,7 +345,14 @@ while(keystroke==-1):
         paint_menu(window)
         keystroke=-1
     elif(keystroke==53):
-        CargaMasiva()
+        hola = textpadCarga()
+        holas = str(hola.split())
+        k=2
+        hoho=''
+        while k < len(holas)-2:
+            hoho+=str(holas[k])
+            k+=1
+        CargaMasiva(hoho)
         paint_title(window,' BULK LOADING ')
         window.addstr(8,22,'Carga con exito')
         wait_esc(window)
